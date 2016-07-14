@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Wall</title>
+</head>
+<body>
+
+  <h1>Welcome, {{data['user'][0]['first_name']}} {{data['user'][0]['last_name']}}. This is the wall!</h1>
+
+  <p><a href="/logout">Logout</a></p>
+
+  <form action="/postMessage" method="Post">
+    <input type="text" name="message">
+    <input type="submit" value="Post Message">
+  </form>
+
+  <hr>
+  {% for message in data['messages'] %}
+    <div>
+      <p>ID: {{message['message_id']}}</p>
+      <p>MESSAGE: {{message['message']}}</p>
+      <p>MESSAGE OWNER: {{message['first_name']}}</p>
+      <p>CREATED AT: {{message['created_at']}}</p>
+      <form action="/postComment/{{message['message_id']}}" method="Post">
+        <input type="text" name="comment">
+        <input type="submit" value="Post Comment">
+      </form>
+      {% for comment in data['comments'] %}
+        {% if comment['message_id'] == message['message_id'] %}
+          <p>{{comment['comment']}} - {{comment['created_at']}}</p>
+          <p>{{comment['first_name']}} {{comment['last_name']}}</p>
+        {% endif %}
+      {% endfor %}
+      <hr>
+    </div>
+  {% endfor %}
+
+
+
+</body>
+</html>
